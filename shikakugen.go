@@ -40,7 +40,7 @@ func (m *ShikakuMap) Reset() {
 
 func (m *ShikakuMap) GenerateBlocks(amount int) error {
 	// first try to place N blocks
-	for generateAttempt := 0; generateAttempt < 10; generateAttempt++ {
+	for generateAttempt := 0; generateAttempt < 1000; generateAttempt++ {
 		hasError := false
 		for i := 0; i < amount; i++ {
 			addSucceed := false
@@ -86,7 +86,7 @@ func (m *ShikakuMap) GenerateBlocks(amount int) error {
 		m.Reset()
 	}
 
-	return fmt.Errorf("Failed to generate a map withing 10 attempts")
+	return fmt.Errorf("Failed to generate a map within 1000 attempts")
 }
 
 func (m *ShikakuMap) RemoveBlock(blockIdx int) error {
