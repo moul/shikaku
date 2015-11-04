@@ -1,4 +1,8 @@
-all: shikakugen
+SOURCES := $(shell find . -name "*.go")
+BINARIES := shikakugen
 
-shikakugen: $(shell find . -name "*.go")
+
+all: $(BINARIES)
+
+$(BINARIES): $(SOURCES)
 	go build -o $@ ./cmd/$@
