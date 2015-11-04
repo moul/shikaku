@@ -20,3 +20,8 @@ cover:
 $(BINARIES): $(SOURCES)
 	go get ./...
 	go build -o $@ ./cmd/$@
+
+.PHONY: convey
+convey:
+	go get github.com/smartystreets/goconvey
+	goconvey -cover -port=10042 -workDir="$(realpath .)" -depth=-1
