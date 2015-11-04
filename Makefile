@@ -18,4 +18,5 @@ cover:
 	go test -covermode=count -coverpkg=. -coverprofile=profile.out
 
 $(BINARIES): $(SOURCES)
+	go get ./...
 	go build -o $@ ./cmd/$@
