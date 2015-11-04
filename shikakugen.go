@@ -219,7 +219,7 @@ func (m *ShikakuMap) String() string {
 	return strings.Join(lines, "\n")
 }
 
-func (m *ShikakuMap) DrawMap() string {
+func (m *ShikakuMap) DrawSolution() string {
 	output := []string{}
 
 	output = append(output, fmt.Sprintf("+%s", strings.Repeat("---+", m.Width)))
@@ -264,7 +264,7 @@ func (m *ShikakuMap) GetBlockAtPos(x, y int) *ShikakuMap {
 	return nil
 }
 
-func (m *ShikakuMap) DrawSolution() string {
+func (m *ShikakuMap) DrawMap() string {
 	output := []string{}
 
 	output = append(output, fmt.Sprintf("+%s", strings.Repeat("---+", m.Width)))
