@@ -7,6 +7,25 @@
 
 Solution for [shikaku challenge](https://github.com/jeannedhack/programmingChallenges/tree/master/shikaku)
 
+## Usage
+
+```console
+$ shikakugen --help
+Usage:
+  shikakugen [OPTIONS]
+
+Application Options:
+  -W, --width=             Width of the grid
+  -H, --height=            Height of the grid
+  -B, --blocks=            Blocks in the grid
+  -m, --draw-map           Draw the map in ascii-art
+  -s, --draw-solution      Draw the solution in ascii-art
+  -q, --no-machine-output  No machine output
+
+Help Options:
+  -h, --help               Show this help message
+```
+
 ## Examples
 
 ```console
@@ -193,39 +212,6 @@ T 20 20
 |                   |       |                               |           |       |
 +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
         0.52 real         0.58 user         0.03 sys
-```
-
-## Usage
-
-```console
-$ shikakugen --help
-Usage:
-  shikakugen [OPTIONS]
-
-Application Options:
-  -W, --width=             Width of the grid
-  -H, --height=            Height of the grid
-  -B, --blocks=            Blocks in the grid
-  -m, --draw-map           Draw the map in ascii-art
-  -s, --draw-solution      Draw the solution in ascii-art
-  -q, --no-machine-output  No machine output
-
-Help Options:
-  -h, --help               Show this help message
-
-2015/11/04 23:16:45 Parsing error: Usage:
-  shikakugen [OPTIONS]
-
-Application Options:
-  -W, --width=             Width of the grid
-  -H, --height=            Height of the grid
-  -B, --blocks=            Blocks in the grid
-  -m, --draw-map           Draw the map in ascii-art
-  -s, --draw-solution      Draw the solution in ascii-art
-  -q, --no-machine-output  No machine output
-
-Help Options:
-  -h, --help               Show this help message
 ```
 
 ## Install
