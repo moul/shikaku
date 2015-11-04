@@ -54,14 +54,8 @@ func (m *ShikakuMap) GenerateBlocks(amount int) error {
 				yPos := rand.Intn(m.Height)
 
 				block := NewShikakuMap(width, height, xPos, yPos)
-				for j := 0; j < 10; j++ {
-					biggerBlock := block.Grow()
-					if m.BlockFits(biggerBlock) {
-						block = biggerBlock
-					}
-				}
-
-				if block.Size() > 1 {
+				block = block.Grow()
+				if m.BlockFits(block) {
 					if err := m.AddBlock(block); err != nil {
 						panic(err)
 					}
@@ -134,6 +128,10 @@ func (m *ShikakuMap) AvailableSlots() int {
 }
 
 func (m *ShikakuMap) BlockFits(block *ShikakuMap) bool {
+	if block.Size() < 2 {
+		return false
+	}
+
 	if block.XPos < 0 || block.YPos < 0 {
 		return false
 	}
@@ -166,9 +164,6 @@ func (m *ShikakuMap) Grow() *ShikakuMap {
 }
 
 func (m *ShikakuMap) AddBlock(block *ShikakuMap) error {
-	if block.Size() < 2 {
-		return fmt.Errorf("Block too small")
-	}
 	if !m.BlockFits(block) {
 		return fmt.Errorf("The block does not fit in the current map")
 	}
