@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"strings"
 	"time"
 
 	"github.com/jessevdk/go-flags"
@@ -20,8 +21,9 @@ func main() {
 		Height int `short:"H" long:"height" description:"Height of the grid" required:"true"`
 		Blocks int `short:"B" long:"blocks" description:"Blocks in the grid" required:"true"`
 
-		DrawMap      bool `short:"m" long:"draw-map" description:"Draw the map in ascii-art"`
-		DrawSolution bool `short:"s" long:"draw-solution" description:"Draw the solution in ascii-art"`
+		DrawMap         bool `short:"m" long:"draw-map" description:"Draw the map in ascii-art"`
+		DrawSolution    bool `short:"s" long:"draw-solution" description:"Draw the solution in ascii-art"`
+		NoMachineOutput bool `short:"q" long:"no-machine-output" description:"No machine output"`
 	}
 
 	if _, err := flags.Parse(&opts); err != nil {
@@ -32,13 +34,17 @@ func main() {
 	if err := shikakuMap.GenerateBlocks(opts.Blocks); err != nil {
 		log.Fatalf("Failed to generate %d blocks: %v", opts.Blocks, err)
 	}
-	fmt.Println(shikakuMap.String())
+
+	outputs := []string{}
+
+	if !opts.NoMachineOutput {
+		outputs = append(outputs, shikakuMap.String())
+	}
 	if opts.DrawMap {
-		fmt.Println()
-		fmt.Println(shikakuMap.DrawMap())
+		outputs = append(outputs, shikakuMap.DrawMap())
 	}
 	if opts.DrawSolution {
-		fmt.Println()
-		fmt.Println(shikakuMap.DrawSolution())
+		outputs = append(outputs, shikakuMap.DrawSolution())
 	}
+	fmt.Println(strings.Join(outputs, "\n\n"))
 }
