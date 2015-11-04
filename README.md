@@ -1,0 +1,2 @@
+# shikaku
+:mahjong: Shikaku game
