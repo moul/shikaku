@@ -7,14 +7,15 @@ import (
 )
 
 type ShikakuMap struct {
-	Width    int
-	Height   int
-	XPos     int
-	YPos     int
-	SubMaps  []*ShikakuMap
-	Grid     [][]int
-	RandXPos int
-	RandYPos int
+	Width       int
+	Height      int
+	XPos        int
+	YPos        int
+	SubMaps     []*ShikakuMap
+	BusyGrid    [][]int
+	NumbersGrid [][]int
+	RandXPos    int
+	RandYPos    int
 }
 
 func NewShikakuMap(width, height, xpos, ypos int) *ShikakuMap {
@@ -32,9 +33,11 @@ func NewShikakuMap(width, height, xpos, ypos int) *ShikakuMap {
 
 func (m *ShikakuMap) Reset() {
 	m.SubMaps = make([]*ShikakuMap, 0)
-	m.Grid = make([][]int, m.Height)
+	m.BusyGrid = make([][]int, m.Height)
+	m.NumbersGrid = make([][]int, m.Height)
 	for i := 0; i < m.Height; i++ {
-		m.Grid[i] = make([]int, m.Width)
+		m.BusyGrid[i] = make([]int, m.Width)
+		m.NumbersGrid[i] = make([]int, m.Width)
 	}
 }
 
@@ -94,9 +97,10 @@ func (m *ShikakuMap) RemoveBlock(blockIdx int) error {
 	m.SubMaps = append(m.SubMaps[:blockIdx], m.SubMaps[blockIdx+1:]...)
 	for y := 0; y < block.Height; y++ {
 		for x := 0; x < block.Width; x++ {
-			m.Grid[y+block.YPos][x+block.XPos]--
+			m.BusyGrid[y+block.YPos][x+block.XPos]--
 		}
 	}
+	m.NumbersGrid[block.YPos+block.RandYPos][block.XPos+block.RandXPos] = 0
 	return nil
 }
 
@@ -121,7 +125,7 @@ func (m *ShikakuMap) AvailableSlots() int {
 	available := 0
 	for y := 0; y < m.Height; y++ {
 		for x := 0; x < m.Width; x++ {
-			if m.Grid[y][x] == 0 {
+			if m.BusyGrid[y][x] == 0 {
 				available++
 			}
 		}
@@ -138,7 +142,7 @@ func (m *ShikakuMap) BlockFits(block *ShikakuMap) bool {
 	}
 	for y := 0; y < block.Height; y++ {
 		for x := 0; x < block.Width; x++ {
-			if m.Grid[block.YPos+y][block.XPos+x] > 0 {
+			if m.BusyGrid[block.YPos+y][block.XPos+x] > 0 {
 				return false
 			}
 		}
@@ -171,7 +175,8 @@ func (m *ShikakuMap) AddBlock(block *ShikakuMap) error {
 	m.SubMaps = append(m.SubMaps, block)
 	for y := 0; y < block.Height; y++ {
 		for x := 0; x < block.Width; x++ {
-			m.Grid[y+block.YPos][x+block.XPos]++
+			m.BusyGrid[y+block.YPos][x+block.XPos]++
+			m.NumbersGrid[block.YPos+block.RandYPos][block.XPos+block.RandXPos] = block.Size()
 		}
 	}
 	return nil
@@ -195,7 +200,7 @@ func (m *ShikakuMap) Blocks() []*ShikakuMap {
 }
 
 func (m *ShikakuMap) BlockDetailString() string {
-	return fmt.Sprintf("%d %d-%d %d-%d", m.Size(), m.XPos, m.Width, m.YPos, m.Height)
+	return fmt.Sprintf("%d %d-%d(%d) %d-%d(%d)", m.Size(), m.XPos, m.Width, m.XPos+m.RandXPos, m.YPos, m.Height, m.YPos+m.RandYPos)
 }
 
 func (m *ShikakuMap) BlockString() string {
@@ -215,19 +220,23 @@ func (m *ShikakuMap) String() string {
 }
 
 func (m *ShikakuMap) Draw() string {
-	output := ""
-	for _, line := range m.Grid {
+	output := []string{}
+
+	output = append(output, fmt.Sprintf("+%s", strings.Repeat("---+", m.Width)))
+	for _, line := range m.NumbersGrid {
+		lineOutput := "|"
 		for _, col := range line {
 			switch col {
 			case 0:
-				output += "."
-			case 1:
-				output += "#"
+				lineOutput += "    "
 			default:
-				panic("should not happen")
+				lineOutput += fmt.Sprintf(" %-3d", col)
 			}
 		}
-		output += "\n"
+		output = append(output, fmt.Sprintf("%s|", lineOutput[:len(lineOutput)-1]))
+		output = append(output, fmt.Sprintf("+%s", strings.Repeat("   +", m.Width)))
 	}
-	return output[:len(output)-1]
+	output[len(output)-1] = fmt.Sprintf("+%s", strings.Repeat("---+", m.Width))
+
+	return strings.Join(output, "\n")
 }

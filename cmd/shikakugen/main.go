@@ -19,6 +19,8 @@ func main() {
 		Width  int `short:"W" long:"width" description:"Width of the grid" required:"true"`
 		Height int `short:"H" long:"height" description:"Height of the grid" required:"true"`
 		Blocks int `short:"B" long:"blocks" description:"Blocks in the grid" required:"true"`
+
+		DrawMap bool `short:"m" long:"draw-map" description:"Draw the map in ascii-art"`
 	}
 
 	if _, err := flags.Parse(&opts); err != nil {
@@ -30,5 +32,7 @@ func main() {
 		log.Fatalf("Failed to generate %d blocks: %v", opts.Blocks, err)
 	}
 	fmt.Println(shikakuMap.String())
-	// fmt.Println(shikakuMap.Draw())
+	if opts.DrawMap {
+		fmt.Println(shikakuMap.Draw())
+	}
 }
