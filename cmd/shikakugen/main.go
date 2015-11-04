@@ -20,7 +20,8 @@ func main() {
 		Height int `short:"H" long:"height" description:"Height of the grid" required:"true"`
 		Blocks int `short:"B" long:"blocks" description:"Blocks in the grid" required:"true"`
 
-		DrawMap bool `short:"m" long:"draw-map" description:"Draw the map in ascii-art"`
+		DrawMap      bool `short:"m" long:"draw-map" description:"Draw the map in ascii-art"`
+		DrawSolution bool `short:"s" long:"draw-solution" description:"Draw the solution in ascii-art"`
 	}
 
 	if _, err := flags.Parse(&opts); err != nil {
@@ -33,6 +34,11 @@ func main() {
 	}
 	fmt.Println(shikakuMap.String())
 	if opts.DrawMap {
-		fmt.Println(shikakuMap.Draw())
+		fmt.Println()
+		fmt.Println(shikakuMap.DrawMap())
+	}
+	if opts.DrawSolution {
+		fmt.Println()
+		fmt.Println(shikakuMap.DrawSolution())
 	}
 }

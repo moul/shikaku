@@ -219,7 +219,7 @@ func (m *ShikakuMap) String() string {
 	return strings.Join(lines, "\n")
 }
 
-func (m *ShikakuMap) Draw() string {
+func (m *ShikakuMap) DrawMap() string {
 	output := []string{}
 
 	output = append(output, fmt.Sprintf("+%s", strings.Repeat("---+", m.Width)))
@@ -237,6 +237,68 @@ func (m *ShikakuMap) Draw() string {
 		output = append(output, fmt.Sprintf("+%s", strings.Repeat("   +", m.Width)))
 	}
 	output[len(output)-1] = fmt.Sprintf("+%s", strings.Repeat("---+", m.Width))
+
+	return strings.Join(output, "\n")
+}
+
+func (m *ShikakuMap) DrawEmptyAsciiMap() []string {
+	output := []string{}
+
+	output = append(output, fmt.Sprintf("+%s", strings.Repeat("---+", m.Width)))
+	for i := 0; i < m.Height; i++ {
+		output = append(output, fmt.Sprintf("+%s", strings.Repeat("   |", m.Width)))
+		output = append(output, fmt.Sprintf("+%s", strings.Repeat("---+", m.Width)))
+	}
+
+	return output
+}
+
+func (m *ShikakuMap) GetBlockAtPos(x, y int) *ShikakuMap {
+	for _, block := range m.Blocks() {
+		if y >= block.YPos && y <= block.YPos+block.Height-1 {
+			if x >= block.XPos && x <= block.XPos+block.Width-1 {
+				return block
+			}
+		}
+	}
+	return nil
+}
+
+func (m *ShikakuMap) DrawSolution() string {
+	output := []string{}
+
+	output = append(output, fmt.Sprintf("+%s", strings.Repeat("---+", m.Width)))
+	for y := 0; y < m.Height; y++ {
+		// a line: horizontal separators
+		lineOutput := "|"
+		for x := 0; x < m.Width; x++ {
+			if x == m.Width-1 {
+				lineOutput += "   |"
+			} else {
+				if m.GetBlockAtPos(x, y) == m.GetBlockAtPos(x+1, y) {
+					lineOutput += "    "
+				} else {
+					lineOutput += "   |"
+				}
+			}
+		}
+		output = append(output, lineOutput)
+
+		// vertical separators
+		lineOutput = "+"
+		for x := 0; x < m.Width; x++ {
+			if y == m.Height-1 {
+				lineOutput += "---+"
+			} else {
+				if m.GetBlockAtPos(x, y) == m.GetBlockAtPos(x, y+1) {
+					lineOutput += "   +"
+				} else {
+					lineOutput += "---+"
+				}
+			}
+		}
+		output = append(output, lineOutput)
+	}
 
 	return strings.Join(output, "\n")
 }
