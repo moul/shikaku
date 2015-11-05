@@ -70,7 +70,7 @@ func (m *ShikakuMap) GenerateBlocks(amount int) error {
 		}
 		if !hasError {
 			// grow the existing blocks
-			for i := 0; i < 1000; i++ {
+			for i := 0; i < 10000; i++ {
 				idx := rand.Intn(amount)
 				if err := m.TryToGrowBlock(idx); err == nil {
 					if m.AvailableSlots() == 0 {
