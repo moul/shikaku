@@ -1,5 +1,6 @@
 SOURCES := $(shell find . -name "*.go")
 BINARIES := shikakugen
+VERSION := $(shell cat .goxc.json | jq -c .PackageVersion | sed 's/"//g')
 
 
 all: build
@@ -40,3 +41,25 @@ goapp_deploy:
 .PHONY: release
 release:
 	goxc
+
+
+.PHONY: build-docker
+build-docker: contrib/docker/.docker-container-built
+	@echo "now you can 'docker push moul/shikaku'"
+
+
+dist/latest/shikaku_latest_linux_386: $(SOURCES)
+	mkdir -p dist
+	rm -f dist/latest
+	(cd dist; ln -s $(VERSION) latest)
+	goxc -bc="linux,386" xc
+	cp dist/latest/shikaku_$(VERSION)_linux_386 $@
+
+
+contrib/docker/.docker-container-built: dist/latest/shikaku_latest_linux_386
+	cp $< contrib/docker/shikaku
+	docker build -t moul/shikaku:latest contrib/docker
+	docker tag -f moul/shikaku:latest moul/shikaku:$(shell echo $(VERSION) | sed 's/\+/plus/g')
+	docker run -it --rm moul/shikaku --width=4 --height=4 --blocks=5 --draw-map --draw-solution
+	docker inspect --type=image --format="{{ .Id }}" moul/shikaku > $@.tmp
+	mv $@.tmp $@

@@ -1,3 +1,5 @@
+contrib/docker/shikaku
+contrib/docker/.docker-container-built
 /shikakugen
 
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
