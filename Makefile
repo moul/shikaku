@@ -35,3 +35,8 @@ goapp_serve:
 .PHONY: goapp_deploy
 goapp_deploy:
 	goapp deploy -application shikaku-as-a-service ./cmd/appspot/app.yaml
+
+
+.PHONY: release
+release:
+	goxc
