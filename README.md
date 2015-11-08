@@ -7,6 +7,10 @@
 
 Solution for [shikaku challenge](https://github.com/jeannedhack/programmingChallenges/tree/master/shikaku)
 
+## Demo
+
+http://shikaku-as-a-service.appspot.com/
+
 ## Usage
 
 ```console
