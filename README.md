@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/moul/shikaku.svg?branch=master)](https://travis-ci.org/moul/shikaku)
 [![GoDoc](https://godoc.org/github.com/moul/shikaku?status.svg)](https://godoc.org/github.com/moul/shikaku)
-[![Coverage Status](https://coveralls.io/repos/moul/shikaku/badge.svg?branch=master&service=github)](https://coveralls.io/github/moul/shikaku?branch=master)
+[![Coverage Status](https://coveralls.io/repos/moul/shikaku/badge.svg?branch=master&service=github)](https://coveralls.io/github/moul/shikaku?branch=master) [![GuardRails badge](https://badges.production.guardrails.io/moul/shikaku.svg)](https://www.guardrails.io)
 
 Solution for [shikaku challenge](https://github.com/jeannedhack/programmingChallenges/tree/master/shikaku)
 
